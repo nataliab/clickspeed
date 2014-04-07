@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.dbd.devday.db.cassandra.CassandraKeyValueStoreDAOTest" tests="7" failures="0" errors="0" timestamp="2014-04-06T21:50:24" hostname="Natalia-VAIO" time="1.263">
+  <properties/>
+  <testcase name="testCreate" classname="com.dbd.devday.db.cassandra.CassandraKeyValueStoreDAOTest" time="0.594"/>
+  <testcase name="testDeleteRow" classname="com.dbd.devday.db.cassandra.CassandraKeyValueStoreDAOTest" time="0.11"/>
+  <testcase name="testDelete" classname="com.dbd.devday.db.cassandra.CassandraKeyValueStoreDAOTest" time="0.107"/>
+  <testcase name="testGetAll" classname="com.dbd.devday.db.cassandra.CassandraKeyValueStoreDAOTest" time="0.09"/>
+  <testcase name="testUpdate" classname="com.dbd.devday.db.cassandra.CassandraKeyValueStoreDAOTest" time="0.097"/>
+  <testcase name="testGetByUserAndKey" classname="com.dbd.devday.db.cassandra.CassandraKeyValueStoreDAOTest" time="0.095"/>
+  <testcase name="testGetAllUsers" classname="com.dbd.devday.db.cassandra.CassandraKeyValueStoreDAOTest" time="0.168"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
