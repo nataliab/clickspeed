@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.dbd.devday.db.cassandra.ClicksDAOTest" tests="1" failures="0" errors="0" timestamp="2014-04-06T21:50:26" hostname="Natalia-VAIO" time="0.105">
+<testsuite name="com.dbd.devday.db.cassandra.ClicksDAOTest" tests="1" failures="0" errors="0" timestamp="2014-04-07T20:15:52" hostname="Natalia-VAIO" time="0.106">
   <properties/>
-  <testcase name="testClick" classname="com.dbd.devday.db.cassandra.ClicksDAOTest" time="0.105"/>
+  <testcase name="testClick" classname="com.dbd.devday.db.cassandra.ClicksDAOTest" time="0.106"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
