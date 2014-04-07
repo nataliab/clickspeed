@@ -15,30 +15,31 @@ div {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	margin: 0 auto;
+	font-family: verdana;
 }
 </style>
 </head>
 <body onload="setFocus()">
-	<div>
+
+	<div id="error" style="color: red;"></div>
+
+	<div id="chartContainer" style="height: 300px; width: 50%;"></div>
+
+	<div align="center">
 		<form>
 			<h4>
-				What's your name? <input type="text" name="user" id="user"
-					onkeyup="startCapturingClicks(event)">
+				<p style="padding-left: 0; margin-left: 0;">Fancy clicking?...</p>
+				<p style="padding-left: 7em; margin-left: 7em;">
+					Yes! My name is <input type="text" name="user" id="user"
+						onkeyup="startCapturingClicks(event)">
+				</p>
 			</h4>
 		</form>
 	</div>
-	<div id="error" style="color: red;"></div>
-	<div>
-		<table>
-			<tr>
-				<td style="width: 250px; height: 400px;"><div id="clicks"
-						style="overflow: scroll; height: 400px; width: 200px; overflow-x: hidden; overflow-y: hidden; display: none">
-						<h3>Start clicking now!</h3>
-					</div></td>
-				<td><div id="chartContainer" style="height: 300px; width: 100;">
-					</div></td>
-			</tr>
-		</table>
+	<div id="clicks" align="center"
+		style="overflow: scroll; height: 200px; width: 100%; overflow-x: hidden; overflow-y: hidden; display: none">
+		<h5>Start clicking now!</h5>
 	</div>
 </body>
 </html>

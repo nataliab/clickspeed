@@ -1,7 +1,7 @@
 $(document).ready(function() {
-
 	var dps = [];
-
+	var playerColors = [];
+	var backupPlayerColors = [];
 	var chart = new CanvasJS.Chart("chartContainer", {
 		title : {
 			text : "Speed - clicks per second"
@@ -9,7 +9,7 @@ $(document).ready(function() {
 		axisY : {
 			suffix : " cps",
 			minimum : 0,
-			maximum: 20
+			maximum : 20
 		},
 		legend : {
 			verticalAlign : 'bottom',
@@ -28,47 +28,32 @@ $(document).ready(function() {
 	var updateChart = function() {
 		var errdiv = document.getElementById('error');
 		$.ajax({
-			url : window.location.pathname+"clicks",
+			url : window.location.pathname + "clicks",
 			type : 'GET',
 			success : function(data) {
 				dps.length = 0;
+				backupPlayerColors = $.extend(true, [], playerColors);
+				playerColors = [];
+				var color = getRandomColor();
 				$.each(data, function(index, player) {
 					var yVal = player.average > 0 ? player.average : 0;
+					if (backupPlayerColors[player.userId]) {
+						color = backupPlayerColors[player.userId];
+					}
 					dps[index] = {
 						label : player.userId,
 						y : yVal,
-						color : "#FF2500"
+						color : color
 					};
+					playerColors[player.userId] = color;
 				});
+
+				backupPlayerColors = [];
 			},
 			error : function(xhr, ajaxOptions, thrownError) {
 				errdiv.innerHTML = xhr.status + ' ' + thrownError + '<br/>';
 			}
 		});
-
-		// for (var i = 0; i < dps.length; i++) {
-		//
-		// // generating random variation deltaY
-		// var deltaY = Math.round(20 + Math.random() * (-40));
-		// var yVal = deltaY + dps[i].y > 0 ? dps[i].y + deltaY : 0;
-		// var boilerColor;
-		//
-		// // color of dataPoint dependent upon y value.
-		//
-		// boilerColor = yVal > 200 ? "#FF2500"
-		// : yVal >= 170 ? "#FF6000" : yVal < 170 ? "#6B8E23 "
-		// : null;
-		//
-		// // updating the dataPoint
-		// dps[i] = {
-		// label : "player" + (i + 1),
-		// y : yVal,
-		// color : boilerColor
-		// };
-		//
-		// }
-		// ;
-
 		chart.render();
 	};
 
@@ -89,28 +74,25 @@ function startCapturingClicks(e) {
 		document.captureEvents(Event.MOUSEDOWN);
 		document.onmousedown = function(event) {
 			var time = new Date();
-			var timeString = time.getHours() + ':' + time.getMinutes() + ':'
-					+ time.getSeconds() + '.' + time.getMilliseconds();
+			var timeString = dateToTime(time);
 			var div = document.getElementById('clicks');
 			var errdiv = document.getElementById('error');
-			
 			var timestamp = {
 				timestamp : time.getTime()
 			};
 			$.ajax({
-				url : window.location.pathname+"clicks/" + inp,
+				url : window.location.pathname + "clicks/" + $("#user").val(),
 				type : "POST",
 				data : JSON.stringify(timestamp),
 				dataType : 'json',
 				contentType : "application/json; charset=utf-8",
 				success : function(data) {
-					alert('ok');
 				},
 				error : function(xhr, ajaxOptions, thrownError) {
 					if (xhr.status > 202)
 						errdiv.innerHTML = xhr.status + ' ' + thrownError
 								+ '<br/>';
-					else{
+					else {
 						div.innerHTML = div.innerHTML + timeString + '<br/>';
 						div.scrollTop = div.scrollHeight;
 					}
@@ -118,4 +100,17 @@ function startCapturingClicks(e) {
 			});
 		}
 	}
+}
+
+function getRandomColor() {
+	return "#" + (Math.round(Math.random() * 0XFFFFFF)).toString(16);
+}
+
+function dateToTime(time) {
+	var h = time.getHours();
+	var m = time.getMinutes();
+	var s = time.getSeconds();
+	var ms = time.getMilliseconds();
+	return '' + (h <= 9 ? '0' + h : h) + ':' + (m <= 9 ? '0' + m : m) + ':'
+			+ (s <= 9 ? '0' + s : s) + '.' + ms;
 }
