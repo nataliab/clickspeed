@@ -28,7 +28,7 @@ $(document).ready(function() {
 	var updateChart = function() {
 		var errdiv = document.getElementById('error');
 		$.ajax({
-			url : "http://localhost:8080/devday/clicks",
+			url : window.location.pathname+"clicks",
 			type : 'GET',
 			success : function(data) {
 				dps.length = 0;
@@ -98,7 +98,7 @@ function startCapturingClicks(e) {
 				timestamp : time.getTime()
 			};
 			$.ajax({
-				url : "http://localhost:8080/devday/clicks/" + inp,
+				url : window.location.pathname+"clicks/" + inp,
 				type : "POST",
 				data : JSON.stringify(timestamp),
 				dataType : 'json',
