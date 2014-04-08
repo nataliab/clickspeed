@@ -58,6 +58,7 @@ to update build path.
 ### Playing
 Enter your name and start clicking! Chart shows all users currently playing.
 
+![Playing](/screens/clickspeed.png)
 
 ### How is the average speed computed?
 
