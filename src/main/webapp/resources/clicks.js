@@ -31,7 +31,6 @@ $(document).ready(function() {
 			url : window.location.pathname + "clicks",
 			type : 'GET',
 			success : function(data) {
-				dps.length = 0;
 				backupPlayerColors = $.extend(true, [], playerColors);
 				playerColors = [];
 				var i = 0;
