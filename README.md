@@ -69,4 +69,19 @@ Every click's timestamp is inserted into Cassanrda database with time to live = 
 CREATE TABLE clicks (user_id text, event_time timestamp, PRIMARY KEY(user_id, event_time));
 ```
 
+Example database content:
+```
+cqlsh:developer_day> select * from clicks;
+
+ user_id | event_time
+---------+--------------------------------------
+    adam | 2013-05-13 10:42:51GMT Daylight Time
+    adam | 2013-05-13 10:42:51GMT Daylight Time
+     nat | 2013-05-13 10:43:01GMT Daylight Time
+     nat | 2013-05-13 13:29:31GMT Daylight Time
+     nat | 2013-05-19 05:36:21GMT Daylight Time
+
+(5 rows)
+```
+
 
