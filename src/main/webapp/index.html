@@ -17,6 +17,7 @@ div {
 	user-select: none;
 	margin: 0 auto;
 	font-family: verdana;
+	font-size: 14;
 }
 </style>
 </head>
@@ -27,13 +28,11 @@ div {
 	<div id="chartContainer" style="height: 300px; width: 50%;"></div>
 
 	<div align="center">
-		<h4>
-			<p style="padding-left: 0; margin-left: 0;">Fancy clicking?...</p>
-			<p style="padding-left: 7em; margin-left: 7em;">
-				Yes! My name is <input type="text" name="user" id="user"
-					onkeyup="startCapturingClicks(event)">
-			</p>
-		</h4>
+		<p style="padding-left: 0; margin-left: 0;">Fancy clicking?...</p>
+		<p style="padding-left: 7em; margin-left: 7em;">
+			Yes! My name is <input type="text" name="user" id="user"
+				onkeyup="startCapturingClicks(event)">
+		</p>
 	</div>
 	<div id="clicks" align="center"
 		style="overflow: scroll; height: 200px; width: 100%; overflow-x: hidden; overflow-y: hidden; display: none">

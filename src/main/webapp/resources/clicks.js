@@ -1,7 +1,20 @@
+var dps = [];
+var playerColors = [];
+var chart = null;
+var updateInterval = 200;
+var errdiv;
+
 $(document).ready(function() {
-	var dps = [];
-	var playerColors = [];
-	var chart = new CanvasJS.Chart("chartContainer", {
+	errdiv = document.getElementById('error');
+	chart = createChart();
+	setInterval(function() {
+		updateChart()
+	}, updateInterval);
+
+});
+
+function createChart() {
+	return new CanvasJS.Chart("chartContainer", {
 		title : {
 			text : "Speed - clicks per second"
 		},
@@ -21,89 +34,91 @@ $(document).ready(function() {
 			dataPoints : dps
 		} ]
 	});
+}
 
-	var updateInterval = 100;
+function updateChart() {
+	var color;
+	var backupPlayerColors;
+	$.ajax({
+		url : window.location.pathname + "clicks",
+		type : 'GET',
+		success : redrawChart,
+		error : function(xhr, ajaxOptions, thrownError) {
+			errdiv.innerHTML = xhr.status + ' ' + thrownError + '<br/>';
+		}
+	});
+}
 
-	var updateChart = function() {
-		var errdiv = document.getElementById('error');
-		$.ajax({
-			url : window.location.pathname + "clicks",
-			type : 'GET',
-			success : function(data) {
-				dps.length = 0;
-				dps.splice();
-				var backupPlayerColors = $.extend(true, [], playerColors);
-				playerColors = [];
-				$.each(data, function(index, player) {
-					var color = getRandomColor();
-					var yVal = player.average > 0 ? player.average : 0;
-					if (backupPlayerColors[player.userId]) {
-						color = backupPlayerColors[player.userId];
-					}
-					dps[index] = {
-						label : player.userId,
-						y : yVal,
-						color : color
-					};
-					playerColors[player.userId] = color;
-				});
-				
-				backupPlayerColors = [];
-			},
-			error : function(xhr, ajaxOptions, thrownError) {
-				errdiv.innerHTML = xhr.status + ' ' + thrownError + '<br/>';
-			}
-		});
+function redrawChart(data) {
+	dps.splice(0);
+	backupPlayerColors = $.extend(true, [], playerColors);
+	playerColors = [];
+	$.each(data, function(index, player) {
+		var yVal = player.average > 0 ? player.average : 0;
+		if (backupPlayerColors[player.userId]) {
+			color = backupPlayerColors[player.userId];
+		} else {
+			color = getRandomColor();
+		}
+		dps[index] = {
+			label : player.userId,
+			y : yVal,
+			color : color
+		};
+		playerColors[player.userId] = color;
+	});
+	backupPlayerColors = [];
+	try {
 		chart.render();
-	};
-
-	updateChart();
-	setInterval(function() {
-		updateChart()
-	}, updateInterval);
-});
+	} catch (err) {
+		errdiv.innerHTML = err + "<br/>" + err.stack;
+		playerColors.splice(0);
+		dps.splice(0);
+	}
+}
 
 function setFocus() {
 	document.getElementById("user").focus();
 }
 
 function startCapturingClicks(e) {
-	var inp = $("#user").val();
-	if (jQuery.trim(inp).length > 0) {
+	if (jQuery.trim($("#user").val()).length > 0) {
 		$("#clicks").show();
 		document.captureEvents(Event.MOUSEDOWN);
-		document.onmousedown = function(event) {
-			var time = new Date();
-			var timeString = dateToTime(time);
-			var div = document.getElementById('clicks');
-			var errdiv = document.getElementById('error');
-			var timestamp = {
-				timestamp : time.getTime()
-			};
-			$.ajax({
-				url : window.location.pathname + "clicks/" + $("#user").val(),
-				type : "POST",
-				data : JSON.stringify(timestamp),
-				dataType : 'json',
-				contentType : "application/json; charset=utf-8",
-				success : function(data) {
-				},
-				error : function(xhr, ajaxOptions, thrownError) {
-					if (xhr.status > 202)
-						errdiv.innerHTML = xhr.status + ' ' + thrownError
-								+ '<br/>';
-					else {
-						div.innerHTML = div.innerHTML + timeString + '<br/>';
-						div.scrollTop = div.scrollHeight;
-					}
-				}
-			});
-		}
+		document.onmousedown = registerClick;
 	}
 }
 
+function registerClick() {
+	var time = new Date();
+	var timeString = dateToTime(time);
+	var div = document.getElementById('clicks');
+	var timestamp = {
+		timestamp : time.getTime()
+	};
+	$.ajax({
+		url : window.location.pathname + "clicks/" + $("#user").val(),
+		type : "POST",
+		data : JSON.stringify(timestamp),
+		dataType : 'json',
+		contentType : "application/json; charset=utf-8",
+		success : function(data) {
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			if (xhr.status > 202)
+				errdiv.innerHTML = xhr.status + ' ' + thrownError + '<br/>';
+			else {
+				div.innerHTML = div.innerHTML + timeString + '<br/>';
+				div.scrollTop = div.scrollHeight;
+			}
+		}
+	});
+}
+
 function getRandomColor() {
-	return "#" + (Math.round(Math.random() * 0XFFFFFF)).toString(16);
+	return "#000000".replace(/0/g, function() {
+		return (~~(Math.random() * 16)).toString(16);
+	});
 }
 
 function dateToTime(time) {
