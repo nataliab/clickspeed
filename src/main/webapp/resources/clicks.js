@@ -34,6 +34,7 @@ $(document).ready(function() {
 				dps.length = 0;
 				backupPlayerColors = $.extend(true, [], playerColors);
 				playerColors = [];
+				var i = 0;
 				$.each(data, function(index, player) {
 					var color = getRandomColor();
 					var yVal = player.average > 0 ? player.average : 0;
@@ -46,8 +47,10 @@ $(document).ready(function() {
 						color : color
 					};
 					playerColors[player.userId] = color;
+					i = index;
 				});
 
+				dps.splice(i, dps.length - i);
 				backupPlayerColors = [];
 			},
 			error : function(xhr, ajaxOptions, thrownError) {
