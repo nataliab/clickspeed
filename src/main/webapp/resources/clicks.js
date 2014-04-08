@@ -34,8 +34,8 @@ $(document).ready(function() {
 				dps.length = 0;
 				backupPlayerColors = $.extend(true, [], playerColors);
 				playerColors = [];
-				var color = getRandomColor();
 				$.each(data, function(index, player) {
+					var color = getRandomColor();
 					var yVal = player.average > 0 ? player.average : 0;
 					if (backupPlayerColors[player.userId]) {
 						color = backupPlayerColors[player.userId];
